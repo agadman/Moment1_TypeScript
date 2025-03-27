@@ -35,3 +35,57 @@ interface Course {
   progression: "A" | "B" | "C";
   syllabus: string;
 }
+
+function getCourses(): Course[] {
+  return JSON.parse(localStorage.getItem("courses") || "[]");
+}
+
+function saveCourses(courses: Course[]) {
+  localStorage.setItem("courses", JSON.stringify(courses));
+}
+
+function printCourseDetails(course: Course): void {
+  const courseList = document.getElementById("courseList");
+  if (courseList) {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      ${course.code} - ${course.name} - ${course.progression}
+      <a href=${course.syllabus}">Kursplan</a>   
+    `;
+    courseList.appendChild(li);
+  }
+}
+
+function printSavedCourses(): void {
+  const courseList = document.getElementById("courseList");
+  if(courseList) {
+    courseList.innerHTML = "";
+    getCourses().forEach(printCourseDetails);
+  }
+}
+
+const courseForm = document.getElementById("addCourseForm") as HTMLFormElement;
+
+courseForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  const codeInput = document.getElementById("courseCode") as HTMLInputElement;
+  const nameInput = document.getElementById("courseName") as HTMLInputElement;
+  const progressionInput = document.getElementById("courseProgression") as HTMLInputElement;
+  const syllabusInput = document.getElementById("courseSyllabus") as HTMLInputElement;
+
+  const newCourse: Course = {
+    code: codeInput.value,
+    name: nameInput.value,
+    progression: progressionInput.value as "A" | "B" | "C",
+    syllabus: syllabusInput.value,
+   };
+
+   const courses = getCourses();
+   courses.push(newCourse);
+   saveCourses(courses);
+
+   printSavedCourses();
+
+})
+printSavedCourses();
