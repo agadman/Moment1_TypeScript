@@ -26,7 +26,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </form>
 
         <h2>Min kurslista</h2>
-        <ul id="courseList"></ul>
+        <ul id="courseList">
+          <li>DT208G - Programmering i TypeScript - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT208G/" target="_blank">Kursplan</a></li>
+          <li>DT207G - Backend-baserad webbutveckling - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT207G/" target="_blank">Kursplan</a></li>
+        </ul>
   </div>
 `
 interface Course {
@@ -49,8 +52,7 @@ function printCourseDetails(course: Course): void {
   if (courseList) {
     const li = document.createElement("li");
     li.innerHTML = `
-      ${course.code} - ${course.name} - ${course.progression}
-      <a href=${course.syllabus}">Kursplan</a>   
+      ${course.code} - ${course.name} - ${course.progression} <a href=${course.syllabus}" target="_blank">Kursplan</a>   
     `;
     courseList.appendChild(li);
   }
@@ -59,7 +61,6 @@ function printCourseDetails(course: Course): void {
 function printSavedCourses(): void {
   const courseList = document.getElementById("courseList");
   if(courseList) {
-    courseList.innerHTML = "";
     getCourses().forEach(printCourseDetails);
   }
 }
@@ -86,6 +87,6 @@ courseForm.addEventListener("submit", (event) => {
    saveCourses(courses);
 
    printSavedCourses();
-
+   courseForm.reset();
 })
 printSavedCourses();
