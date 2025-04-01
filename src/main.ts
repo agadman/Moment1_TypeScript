@@ -61,6 +61,7 @@ function printCourseDetails(course: Course): void {
 function printSavedCourses(): void {
   const courseList = document.getElementById("courseList");
   if(courseList) {
+    courseList.innerHTML = "";
     getCourses().forEach(printCourseDetails);
   }
 }
