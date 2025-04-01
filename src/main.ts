@@ -26,10 +26,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </form>
 
         <h2>Min kurslista</h2>
-        <ul>
-          <li>DT208G - Programmering i TypeScript - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT208G/" target="_blank">Kursplan</a></li>
-          <li>DT207G - Backend-baserad webbutveckling - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT207G/" target="_blank">Kursplan</a></li>
-        </ul>
         <ul id="courseList"></ul>
   </div>
 `
@@ -40,8 +36,19 @@ interface Course {
   syllabus: string;
 }
 
+const mandatoryCourses: Course[] = [
+  { code: "DT208G", name: "Programmering i TypeScript", progression: "B", syllabus: "https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT208G/" },
+  { code: "DT207G", name: "Backend-baserad webbutveckling", progression: "B", syllabus: "https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT207G/" }
+];
+
 function getCourses(): Course[] {
-  return JSON.parse(localStorage.getItem("courses") || "[]");
+  const storedCourses = JSON.parse(localStorage.getItem("courses") || "[]");
+  
+  const allCourses = [...mandatoryCourses, ...storedCourses].filter(
+    (course, index, self) => index === self.findIndex(c => c.code === course.code)
+  );
+
+  return allCourses;
 }
 
 function saveCourses(courses: Course[]) {
@@ -85,6 +92,12 @@ courseForm.addEventListener("submit", (event) => {
    };
 
    const courses = getCourses();
+
+   if (courses.some(course => course.code === newCourse.code)) {
+    alert("Kurskoden måste vara unik!");
+    return; 
+  }
+
    courses.push(newCourse);
    saveCourses(courses);
 
