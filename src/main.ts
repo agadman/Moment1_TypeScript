@@ -30,7 +30,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <li>DT208G - Programmering i TypeScript - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT208G/" target="_blank">Kursplan</a></li>
           <li>DT207G - Backend-baserad webbutveckling - B <a href="https://www.miun.se/utbildning/kursplaner-och-utbildningsplaner/DT207G/" target="_blank">Kursplan</a></li>
         </ul>
-        <ulid="courseList"></ul>
+        <ul id="courseList"></ul>
   </div>
 `
 interface Course {
